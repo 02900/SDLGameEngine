@@ -3,6 +3,10 @@
 #include <SDL_ttf.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
+#include "SomeClass.hpp"
+
+#include <iostream>
+using namespace std;
 
 // SDL Window
 SDL_Window *_window;
@@ -39,9 +43,12 @@ Mix_Music *_music = NULL;
  */
 void init_sdl()
 {
-  if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
+  if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
+  {
     printf("[Error] SDL Init : %s \n", SDL_GetError());
-  } else {
+  }
+  else
+  {
     printf("SDL INITIALISED\n");
     SDL_DisplayMode dm;
     SDL_GetCurrentDisplayMode(0, &dm);
@@ -57,10 +64,13 @@ void init_sdl()
  */
 void init_window_and_renderer()
 {
-  if (SDL_CreateWindowAndRenderer(_width, _height, SDL_WINDOW_SHOWN, &_window, &_renderer) != 0) {
+  if (SDL_CreateWindowAndRenderer(_width, _height, SDL_WINDOW_SHOWN, &_window, &_renderer) != 0)
+  {
     printf("[Error] Creating Window and Renderer: %s\n", SDL_GetError());
     exit(0);
-  } else {
+  }
+  else
+  {
     printf("Created Window and Renderer %dx%d\n", _width, _height);
   }
 }
@@ -78,9 +88,12 @@ void init_ttf()
  */
 void init_audio()
 {
-  if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) != 0) {
+  if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) != 0)
+  {
     printf("[Error] Error Initialising Audio : %s\n", SDL_GetError());
-  } else {
+  }
+  else
+  {
     printf("Audio Initialised\n");
   }
 }
@@ -117,12 +130,16 @@ void setup_texture()
 
   // Load image at specified path
   SDL_Surface *loadedSurface = IMG_Load("resources/floor.png");
-  if (loadedSurface == NULL) {
+  if (loadedSurface == NULL)
+  {
     printf("[Error] Unable to load image : %s\n", SDL_GetError());
     exit(0);
-  } else {
+  }
+  else
+  {
     _image = SDL_CreateTextureFromSurface(_renderer, loadedSurface);
-    if (_image == NULL) {
+    if (_image == NULL)
+    {
       printf("[Error] Unable to create texture : %s\n", SDL_GetError());
     }
 
@@ -151,7 +168,8 @@ void setup_window_icon()
 void play_audio()
 {
   _music = Mix_LoadMUS("resources/sound.ogg");
-  if (Mix_PlayMusic(_music, -1) != 0) {
+  if (Mix_PlayMusic(_music, -1) != 0)
+  {
     printf("[Error] Could not play music : %s", Mix_GetError());
   }
 }
@@ -162,20 +180,24 @@ void play_audio()
  */
 void handle_mouse_drag(SDL_Event e)
 {
-  if (e.type == SDL_MOUSEBUTTONDOWN) {
+  if (e.type == SDL_MOUSEBUTTONDOWN)
+  {
     // Point where mouse button down occurs
     SDL_Point p = {.x = e.motion.x, .y = e.motion.y};
 
-    if (SDL_PointInRect(&p, &_sampleRect)) {
+    if (SDL_PointInRect(&p, &_sampleRect))
+    {
       _inSampleRect = SDL_TRUE;
     }
   }
 
-  if (e.type == SDL_MOUSEBUTTONUP && _inSampleRect == SDL_TRUE) {
+  if (e.type == SDL_MOUSEBUTTONUP && _inSampleRect == SDL_TRUE)
+  {
     _inSampleRect = SDL_FALSE;
   }
 
-  if (e.type == SDL_MOUSEMOTION && _inSampleRect == SDL_TRUE) {
+  if (e.type == SDL_MOUSEMOTION && _inSampleRect == SDL_TRUE)
+  {
     _sampleRect.x += e.motion.xrel;
     _sampleRect.y += e.motion.yrel;
   }
@@ -189,19 +211,25 @@ void main_loop()
   SDL_bool loop = SDL_TRUE;
   SDL_Event event;
 
-  while (loop) {
+  while (loop)
+  {
 
     // Allow quiting with escape key by polling for pending events
-    while (SDL_PollEvent(&event)) {
-      if (event.type == SDL_QUIT) {
+    while (SDL_PollEvent(&event))
+    {
+      if (event.type == SDL_QUIT)
+      {
         loop = SDL_FALSE;
-      } else if (event.type == SDL_KEYDOWN) {
-        switch (event.key.keysym.sym) {
-          case SDLK_ESCAPE:
-            loop = SDL_FALSE;
-            break;
-          default:
-            loop = SDL_TRUE;
+      }
+      else if (event.type == SDL_KEYDOWN)
+      {
+        switch (event.key.keysym.sym)
+        {
+        case SDLK_ESCAPE:
+          loop = SDL_FALSE;
+          break;
+        default:
+          loop = SDL_TRUE;
         }
       }
       handle_mouse_drag(event);
@@ -264,7 +292,8 @@ int main()
 
   // When we exit the loop clean up and exit SDL
   // Audio
-  if (Mix_PlayingMusic()) {
+  if (Mix_PlayingMusic())
+  {
     Mix_HaltMusic();
   }
   Mix_FreeMusic(_music);
@@ -279,5 +308,7 @@ int main()
   SDL_DestroyWindow(_window);
   // SDL
   SDL_Quit();
+
+  int x = SomeClass::foo();
   exit(0);
 }
