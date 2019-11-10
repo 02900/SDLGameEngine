@@ -21,10 +21,8 @@ void Map::loadMap(std::string path, int sizeX, int sizeY)
     
     for(int i = 0; i < sizeX; i++){
         for(int j = 0; j < sizeY; j++){
-            
             mapFile.get(tile);
             mapFile.ignore();
-            
             Game::addTile(atoi(&tile), j * 64, i * 64);
         }
     }
@@ -53,7 +51,3 @@ void Map::loadColliders(std::string path, int sizeX, int sizeY)
     
     mapCollidersFile.close();
 }
-
-
-
-

@@ -16,6 +16,8 @@ public:
     int width = 32;
     int scale = 2;
 
+    int minDistance = 100;
+
     IAAgentComponent(Vector2D position, Vector2D *target, const float sp, const char *path, int beha) : maxSpeed(sp), behavior(beha)
     {
         this->position = position;
@@ -36,6 +38,10 @@ public:
         Vector2D direction;
         direction.x = position.x - target->x;
         direction.y = position.y - target->y;
+
+        if (direction.magnitude() > minDistance)
+            return direction.zero();
+
         direction = direction * (1 / direction.magnitude());
 
         return direction;
@@ -46,18 +52,25 @@ public:
         Vector2D direction;
         direction.x = target->x - position.x;
         direction.y = target->y - position.y;
-        direction = direction * (1 / direction.magnitude());
 
+        if (direction.magnitude() < minDistance)
+            return direction.zero();
+
+        direction = direction * (1 / direction.magnitude());
         return direction;
     }
 
     void update() override
     {
-        if (behavior == 1)
-            velocity = flee() * maxSpeed;
-
-        else if (behavior == 2)
-            velocity = seek() * maxSpeed;
+        switch(behavior){
+            case 1:
+                velocity = flee() * maxSpeed;
+            break;
+            
+            case 2:
+                velocity = seek() * maxSpeed;
+            break;
+        }
 
         position.x += velocity.x;
         position.y += velocity.y;

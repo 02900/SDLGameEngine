@@ -66,12 +66,12 @@ void Game::start()
 {
 
   TileComponent::PreLoadTextures();
-  Map::loadMap("resources/Map.txt", 20, 26);
-  Map::loadColliders("resources/Colliders.txt", 20, 26);
+  Map::loadMap("../resources/Map.txt", 20, 26);
+  Map::loadColliders("../resources/Colliders.txt", 20, 26);
 
   player.addComponent<TransformComponent>(500.0f, 1020.0f, 64, 64, 1);
-  Animation idle = Animation(74, 74, 3, 400, "resources/Characters/wizard/idle.png");
-  Animation walk = Animation(78, 74, 4, 300, "resources/Characters/wizard/walk.png");
+  Animation idle = Animation(74, 74, 3, 400, "../resources/Characters/wizard/idle.png");
+  Animation walk = Animation(78, 74, 4, 300, "../resources/Characters/wizard/walk.png");
   map<const char *, Animation> playerAnims;
   playerAnims.emplace("Idle", idle);
   playerAnims.emplace("Walk", walk);
@@ -80,14 +80,14 @@ void Game::start()
   player.addComponent<ColliderComponent>("player");
   player.addGroup(groupPlayers);
 
-  IA.addComponent<IAAgentComponent>(Vector2D(400.0f, 1020.0f), &player.getComponent<TransformComponent>().position, 3, "resources/Characters/player.png", 2);
+  IA.addComponent<IAAgentComponent>(Vector2D(400.0f, 1020.0f), &player.getComponent<TransformComponent>().position, 3, "../resources/Characters/player.png", 2);
   IA.addGroup(groupIA);
 
-  Game::assets->CreateProjectile(Vector2D(500, 900), "resources/Projectiles/soccer.png");
-  Game::assets->CreateProjectile(Vector2D(400, 900), "resources/Projectiles/soccer.png");
-  Game::assets->CreateProjectile(Vector2D(600, 900), "resources/Projectiles/soccer.png");
-  Game::assets->CreateProjectile(Vector2D(700, 900), "resources/Projectiles/soccer.png");
-  Game::assets->CreateProjectile(Vector2D(300, 900), "resources/Projectiles/soccer.png");
+  Game::assets->CreateProjectile(Vector2D(500, 900), "../resources/Projectiles/soccer.png");
+  Game::assets->CreateProjectile(Vector2D(400, 900), "../resources/Projectiles/soccer.png");
+  Game::assets->CreateProjectile(Vector2D(600, 900), "../resources/Projectiles/soccer.png");
+  Game::assets->CreateProjectile(Vector2D(700, 900), "../resources/Projectiles/soccer.png");
+  Game::assets->CreateProjectile(Vector2D(300, 900), "../resources/Projectiles/soccer.png");
 }
 
 auto &tiles(manager.getGroup(Game::groupMap));
